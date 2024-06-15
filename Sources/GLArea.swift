@@ -169,6 +169,7 @@ public struct GLArea: Widget {
     /// [method@Gtk.GLArea.set_error] to register a more detailed error
     /// of how the construction failed.
     var createContext: (() -> Void)?
+    var realize: (() -> Void)?
     /// Emitted every time the contents of the `GtkGLArea` should be redrawn.
     ///
     /// The @context is bound to the @area prior to emitting this function,
@@ -214,6 +215,11 @@ public struct GLArea: Widget {
     ///     - modifiers: The view modifiers.
     ///     - updateProperties: Whether to update the view's properties.
     public func update(_ storage: ViewStorage, modifiers: [(View) -> View], updateProperties: Bool) {
+        if let realize {
+            storage.connectSignal(name: "realize", argCount: 0) {
+                realize()
+            }
+        }
         if let createContext {
             storage.connectSignal(name: "create-context", argCount: 0) {
                 createContext()
@@ -341,6 +347,12 @@ public struct GLArea: Widget {
     public func createContext(_ createContext: @escaping () -> Void) -> Self {
         var newSelf = self
         newSelf.createContext = createContext
+        return newSelf
+    }
+    
+    public func realize(_ realize: @escaping () -> Void) -> Self {
+        var newSelf = self
+        newSelf.realize = realize
         return newSelf
     }
 

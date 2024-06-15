@@ -23,6 +23,10 @@ let package = Package(
             resources: [
                 .process("Localized.yml")
             ],
+            cSettings: [
+                .define("GL_SILENCE_DEPRECATION",
+                    .when(platforms: [.macOS])),
+            ],
             plugins: [
                 .plugin(name: "GenerateLocalized", package: "Localized")
             ]
