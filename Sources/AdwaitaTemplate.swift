@@ -9,7 +9,7 @@ let width: Int32 = 640
 let height: Int32 = 480
 
 func checkCompileStatus(_ vs: UInt32) {
-    var status = UnsafeMutablePointer<GLint>.allocate(capacity: 1)
+    let status = UnsafeMutablePointer<GLint>.allocate(capacity: 1)
     glGetShaderiv(vs, UInt32(GL_COMPILE_STATUS), status)
     if status.pointee == GL_FALSE {
         let buf = UnsafeMutablePointer<UInt8>.allocate(capacity: 1024)
@@ -23,7 +23,7 @@ func checkCompileStatus(_ vs: UInt32) {
 func validateProgram(_ program: UInt32) {
 
     // link status
-    var status = UnsafeMutablePointer<GLint>.allocate(capacity: 1)
+    let status = UnsafeMutablePointer<GLint>.allocate(capacity: 1)
     glGetProgramiv(program, UInt32(GL_LINK_STATUS), status)
     if status.pointee == GL_FALSE {
         getProgramInfoLog(program)
